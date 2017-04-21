@@ -6,10 +6,12 @@ namespace Nox7atra
 {
     public class TestUI : MonoBehaviour
     {
+        private const float DELAY = 0.5f;
         [SerializeField]
         private string _EmoSubscriptionKey;
         [SerializeField]
         private RawImage _WebCamImage;
+
         void Awake()
         {
             var texture = new WebCamTexture();
@@ -23,7 +25,11 @@ namespace Nox7atra
             yield return new WaitForSeconds(1f);
             Debug.Log("Start emotions service");
             Services.EmotionService emoServ = new Services.EmotionService(_EmoSubscriptionKey);
-            yield return emoServ.GetEmoInfo(_WebCamImage.texture.GetTexture2D());
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+                yield return emoServ.GetEmoInfoCoroutine(_WebCamImage.texture.GetTexture2D());
+            }
         }
     }
 }

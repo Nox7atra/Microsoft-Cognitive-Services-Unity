@@ -3,33 +3,58 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.Text;
+
 namespace Nox7atra.Services
 {
     public sealed class EmotionService
     {
-        private const string REQUEST_URL = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize";
-        private string _SubscriptionKey;
+        private const string REQUEST_RECOGNIZE_API = ".api.cognitive.microsoft.com/emotion/v1.0/recognize";
 
-        public Emotion[] Emotions;
+        private string _SubscriptionKey;
+        private string _RecognizeRequestUrl;
+        private Emotion[] _LastEmotions;
+        public List<Emotion> LastEmotions
+        {
+            get
+            {
+                return new List<Emotion>(_LastEmotions);
+            }
+        }
         public EmotionService(string subsKey)
         {
             _SubscriptionKey = subsKey;
+            _RecognizeRequestUrl = string.Concat(
+                Constants.REQUEST_PROTOCOL_PREFIX, 
+                ServerLocation.WestUS.GetLocationString(),
+                REQUEST_RECOGNIZE_API);
         }
-
-        public IEnumerator GetEmoInfo(Texture2D texture)
+        public IEnumerator GetEmoInfoCoroutine(Texture2D texture)
+        {
+            yield return CreateRecognizeRequestAndSaveResponse(
+                Constants.CONTENT_FILE_HEADER,
+                texture.EncodeToJPG());
+        }
+        public IEnumerator GetEmoInfoCoroutine(string json)
+        {
+            yield return CreateRecognizeRequestAndSaveResponse(
+                Constants.CONTENT_JSON_HEADER, 
+                Encoding.Default.GetBytes(json));
+        }
+        private IEnumerator CreateRecognizeRequestAndSaveResponse(
+            string contentHeader, 
+            byte[] data)
         {
             Dictionary<string, string> headers = new Dictionary<string, string>();
-            headers.Add("Ocp-Apim-Subscription-Key", _SubscriptionKey);
-            headers.Add("Content-Type", "application/octet-stream");
-            var jpgData = texture.EncodeToJPG();
-            WWW request = new WWW(REQUEST_URL, jpgData, headers);
+            headers.Add(Constants.SUB_KEY_HEADER, _SubscriptionKey);
+            headers.Add(Constants.CONTENT_TYPE_HEADER, contentHeader);
+            WWW request = new WWW(_RecognizeRequestUrl, data, headers);
             yield return new WaitUntil(() => request.isDone);
             ParseEmotionsFromJson(request.text);
         }
-
         private void ParseEmotionsFromJson(string json)
         {
-            Emotions = JsonConvert.DeserializeObject<Emotion[]>(json);
+            _LastEmotions = JsonConvert.DeserializeObject<Emotion[]>(json);
         }
     }
     [Serializable]
@@ -37,36 +62,6 @@ namespace Nox7atra.Services
     {
         public FaceRectangle FaceRectangle;
         public Dictionary<EmotionType, float> Scores;
+    }
 
-    }
-    [Serializable]
-    public struct FaceRectangle
-    {
-        public FaceRectangle(
-            int left,
-            int top,
-            int width,
-            int height)
-        {
-            Left = left;
-            Top = top;
-            Width = width;
-            Height = height;
-        }
-        public readonly int Left;
-        public readonly int Top;
-        public readonly int Width;
-        public readonly int Height;
-    }
-    public enum EmotionType
-    {
-        Anger,
-        Contempt,
-        Disgust,
-        Fear,
-        Happiness,
-        Neutral,
-        Sadness,
-        Surprise
-    }
 }
