@@ -19,4 +19,16 @@
         WestEurope,
         SoutheastAsia
     }
+    public enum FacialHairType
+    {
+        Mustache,
+        Beard,
+        Sideburn
+    }
+    public enum HeadPose
+    {
+        Roll,
+        Yaw,
+        Pitch
+    }
 }

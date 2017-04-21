@@ -54,6 +54,7 @@ namespace Nox7atra.Services
         }
         private void ParseEmotionsFromJson(string json)
         {
+            Debug.Log(json);
             _LastEmotions = JsonConvert.DeserializeObject<Emotion[]>(json);
         }
     }
