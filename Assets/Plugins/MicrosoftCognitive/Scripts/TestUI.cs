@@ -9,10 +9,6 @@ namespace Nox7atra
     {
         private const float DELAY = 0.5f;
         [SerializeField]
-        private string _EmoSubscriptionKey;
-        [SerializeField]
-        private string _FaceSubscriptionKey;
-        [SerializeField]
         private RawImage _WebCamImage;
 
         void Awake()
@@ -27,9 +23,9 @@ namespace Nox7atra
         {
             yield return new WaitForSeconds(1f);
             Debug.Log("Start emotions service");
-            Services.EmotionService emoServ = new Services.EmotionService(_EmoSubscriptionKey);
+            Services.EmotionService emoServ = new Services.EmotionService(SubscriptionKeys.Instance.EmotionsApiKey);
             Debug.Log("Start face service");
-            var faceServ = new FaceService(_FaceSubscriptionKey);
+            var faceServ = new FaceService(SubscriptionKeys.Instance.FaceApiKey);
             while (true)
             {
                 yield return new WaitForEndOfFrame();
