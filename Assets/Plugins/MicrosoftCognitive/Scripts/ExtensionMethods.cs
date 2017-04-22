@@ -30,5 +30,28 @@ namespace Nox7atra
                     return "westus";
             }
         }
+        public static string GetEmotionString(this EmotionType emotion)
+        {
+            switch (emotion)
+            {
+                case EmotionType.Anger:
+                    return "Злость";
+                case EmotionType.Contempt:
+                    return "Презрение";
+                case EmotionType.Disgust:
+                    return "Отвращение";
+                case EmotionType.Fear:
+                    return "Страх";
+                default:
+                case EmotionType.Happiness:
+                    return "Счастье";
+                case EmotionType.Neutral:
+                    return "Безэмоционально";
+                case EmotionType.Sadness:
+                    return "Грусть";
+                case EmotionType.Surprise:
+                    return "Удивление";
+            }
+        }
     }
 }

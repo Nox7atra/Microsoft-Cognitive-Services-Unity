@@ -39,10 +39,11 @@ public class SubscriptionKeys : ScriptableObject
     
     public string EmotionsApiKey;
     public string FaceApiKey;
-
+    public string ComputerVisionApiKey;
     private SubscriptionKeys()
     {
         EmotionsApiKey = DEFAULT_TEXT;
         FaceApiKey = DEFAULT_TEXT;
+        ComputerVisionApiKey = DEFAULT_TEXT;
     }
 }
