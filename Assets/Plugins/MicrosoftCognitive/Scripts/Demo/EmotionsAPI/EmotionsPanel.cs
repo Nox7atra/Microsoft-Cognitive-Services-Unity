@@ -53,7 +53,15 @@ namespace Nox7atra.Demo.EmotionsAPI
                 }
             }
             float maxWeight = weights.Values.Max();
-            return weights.First(x => x.Value == maxWeight).Key.GetEmotionString();
+            if (weights.Count > 0)
+            {
+                return weights.First(x => x.Value
+                    == maxWeight).Key.GetEmotionString();
+            }
+            else
+            {
+                return "Нет лиц";
+            }
         }
     }
 }
