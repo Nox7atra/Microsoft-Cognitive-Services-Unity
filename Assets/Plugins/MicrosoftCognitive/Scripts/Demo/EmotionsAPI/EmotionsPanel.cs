@@ -13,7 +13,7 @@ namespace Nox7atra.Demo.EmotionsAPI
         private WebCamPanel _WebCam;
         [SerializeField]
         private Text _MaxEmotionValue;
-        void Awake()
+        private void Awake()
         {
             StartCoroutine(CheckEmotions());
         }

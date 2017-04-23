@@ -3,47 +3,49 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-
-public class SubscriptionKeys : ScriptableObject
+namespace Nox7atra
 {
-    private const string DEFAULT_TEXT = "Write your subscription key here";
-    private const string ASSET_NAME = "SubscriptionKeys.asset";
-    private const string ASSET_FOLDER = "Assets/Plugins/MicrosoftCognitive";
-    [MenuItem("Microsoft Cognitive/Subscription Keys/Create default")]
-    public static void CreateDefault()
+    public class SubscriptionKeys : ScriptableObject
     {
-        var path = Path.Combine(ASSET_FOLDER, ASSET_NAME);
-        AssetDatabase.CreateAsset(new SubscriptionKeys(), path);
-    }
-    static SubscriptionKeys _Instance;
-
-    public static SubscriptionKeys Instance
-    {
-        get
+        private const string DEFAULT_TEXT = "Write your subscription key here";
+        private const string ASSET_NAME = "SubscriptionKeys.asset";
+        private const string ASSET_FOLDER = "Assets/Plugins/MicrosoftCognitive";
+        [MenuItem("Microsoft Cognitive/Subscription Keys/Create default")]
+        public static void CreateDefault()
         {
-            if (_Instance == null)
-            {
-                var path = Path.Combine(ASSET_FOLDER, ASSET_NAME);
-                _Instance = AssetDatabase.LoadAssetAtPath<SubscriptionKeys>(path);
+            var path = Path.Combine(ASSET_FOLDER, ASSET_NAME);
+            AssetDatabase.CreateAsset(new SubscriptionKeys(), path);
+        }
+        static SubscriptionKeys _Instance;
 
+        public static SubscriptionKeys Instance
+        {
+            get
+            {
                 if (_Instance == null)
                 {
-                    _Instance = CreateInstance<SubscriptionKeys>();
-                    AssetDatabase.CreateAsset(_Instance, path);
-                }
-            }
+                    var path = Path.Combine(ASSET_FOLDER, ASSET_NAME);
+                    _Instance = AssetDatabase.LoadAssetAtPath<SubscriptionKeys>(path);
 
-            return _Instance;
+                    if (_Instance == null)
+                    {
+                        _Instance = CreateInstance<SubscriptionKeys>();
+                        AssetDatabase.CreateAsset(_Instance, path);
+                    }
+                }
+
+                return _Instance;
+            }
         }
-    }
-    
-    public string EmotionsApiKey;
-    public string FaceApiKey;
-    public string ComputerVisionApiKey;
-    private SubscriptionKeys()
-    {
-        EmotionsApiKey = DEFAULT_TEXT;
-        FaceApiKey = DEFAULT_TEXT;
-        ComputerVisionApiKey = DEFAULT_TEXT;
+
+        public string EmotionsApiKey;
+        public string FaceApiKey;
+        public string ComputerVisionApiKey;
+        private SubscriptionKeys()
+        {
+            EmotionsApiKey = DEFAULT_TEXT;
+            FaceApiKey = DEFAULT_TEXT;
+            ComputerVisionApiKey = DEFAULT_TEXT;
+        }
     }
 }

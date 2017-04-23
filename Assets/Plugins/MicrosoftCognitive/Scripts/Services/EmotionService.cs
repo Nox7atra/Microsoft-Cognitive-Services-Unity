@@ -18,7 +18,10 @@ namespace Nox7atra.Services
         {
             get
             {
-                return new List<Emotion>(_LastEmotions);
+                if (_LastEmotions != null)
+                    return new List<Emotion>(_LastEmotions);
+                else
+                    return null;
             }
         }
         public EmotionService(string subsKey)
@@ -61,11 +64,4 @@ namespace Nox7atra.Services
             }
         }
     }
-    [Serializable]
-    public sealed class Emotion
-    {
-        public FaceRectangle FaceRectangle;
-        public Dictionary<EmotionType, float> Scores;
-    }
-
 }
