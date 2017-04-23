@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,15 @@ namespace Nox7atra.Demo
             texture.Play();
             _WebCamImage.texture = texture;
         }
-
+        public void OnSaveScreenshotButton()
+        {
+            StartCoroutine(SaveScreenshot());
+        }
+        private IEnumerator SaveScreenshot()
+        {
+            yield return new WaitForEndOfFrame();
+            var screenshot = Screenshot;
+            File.WriteAllBytes("Assets/test.png", screenshot.EncodeToPNG());
+        }
     }
 }
