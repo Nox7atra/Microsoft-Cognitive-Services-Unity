@@ -34,17 +34,17 @@ namespace Nox7atra.Services
         }
         public IEnumerator GetEmoInfoCoroutine(Texture2D texture)
         {
-            yield return CreateRecognizeRequestAndSaveResponse(
+            yield return CreateRecognizeRequestAndSaveResponseCoroutine(
                 Constants.CONTENT_FILE_HEADER,
                 texture.EncodeToJPG());
         }
         public IEnumerator GetEmoInfoCoroutine(string json)
         {
-            yield return CreateRecognizeRequestAndSaveResponse(
+            yield return CreateRecognizeRequestAndSaveResponseCoroutine(
                 Constants.CONTENT_JSON_HEADER, 
                 Encoding.Default.GetBytes(json));
         }
-        private IEnumerator CreateRecognizeRequestAndSaveResponse(
+        private IEnumerator CreateRecognizeRequestAndSaveResponseCoroutine(
             string contentHeader, 
             byte[] data)
         {

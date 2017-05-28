@@ -20,12 +20,12 @@ namespace Nox7atra.Demo.EmotionsAPI
 
         private IEnumerator CheckEmotions()
         {
-            EmotionService serv = new EmotionService(SubscriptionKeys.Instance.EmotionsApiKey);
+            EmotionService emoServ = new EmotionService(SubscriptionKeys.Instance.EmotionsApiKey);
             while (true)
             {
                 yield return new WaitForEndOfFrame();
-                yield return serv.GetEmoInfoCoroutine(_WebCam.Screenshot);
-                var emotions = serv.LastEmotions;
+                yield return emoServ.GetEmoInfoCoroutine(_WebCam.Screenshot);
+                var emotions = emoServ.LastEmotions;
                 if (emotions != null)
                 {
                     _MaxEmotionValue.text = GetMaxEmotionOnScreenshot(emotions);
@@ -52,9 +52,9 @@ namespace Nox7atra.Demo.EmotionsAPI
                     }
                 }
             }
-            float maxWeight = weights.Values.Max();
             if (weights.Count > 0)
             {
+                float maxWeight = weights.Values.Max();
                 return weights.First(x => x.Value
                     == maxWeight).Key.GetEmotionString();
             }
